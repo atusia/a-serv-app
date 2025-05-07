@@ -1,4 +1,13 @@
-import { Component, ElementRef, inject, input, ViewEncapsulation } from '@angular/core';
+import {
+  afterNextRender,
+  afterRender,
+  Component,
+  contentChild,
+  ElementRef,
+  inject,
+  input,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
   selector: 'app-control',
@@ -18,10 +27,23 @@ export class ControlComponent {
   //   console.log('Clicked!');
   // }
   label=input<string>();
-  private elRef= inject(ElementRef)
+  private elRef= inject(ElementRef);
+  // @ContentChild('input') control?: ElementRef<HTMLInputElement | HTMLAreaElement>;
+  private control = contentChild<ElementRef<HTMLInputElement | HTMLAreaElement>>('input');
+
+  constructor() {
+    afterRender(() => {
+      console.log('afterRender');
+    });
+    afterNextRender(() => {
+      console.log('afterNextRender');
+    });
+  }
 
   onClick() {
     console.log('Clicked!');
     console.log(this.elRef);
+    // console.log(this.control);
+    console.log(this.control());
   }
 }
